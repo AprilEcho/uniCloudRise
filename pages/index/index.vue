@@ -13,7 +13,11 @@
     <view class="loadingState" v-show="loadingState">
       <u-skeleton rows="4" title loading></u-skeleton>
     </view>
-    <view class="content">主体</view>
+    <view class="content">
+      <view class="item" v-for="item in dataList">
+        <blog-item></blog-item>
+      </view>
+    </view>
     <view class="edit">
       <text class="iconfont icon-a-21-xiugai"></text>
     </view>
@@ -24,6 +28,7 @@
   export default {
     data() {
       return {
+        dataList: [1, 2, 3],
         loadingState: false,
         navList: [{
           name: "最新"
@@ -51,6 +56,13 @@
 
     .loadingState {
       padding: 30rpx;
+    }
+
+    .content {
+      .item {
+        padding: 30rpx;
+        border-bottom: 10rpx #f7f7f7 solid;
+      }
     }
 
     .edit {
