@@ -1,6 +1,7 @@
 <template>
   <view class="home">
     首页
+    <text class="iconfont icon-collection-fill"></text>
   </view>
 </template>
 
