@@ -1,0 +1,39 @@
+{
+  "pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+    {
+      "path": "pages/index/index",
+      "style": {}
+    }, {
+      "path": "pages/self/self",
+      "style": {
+        "navigationBarTitleText": "个人中心",
+        "enablePullDownRefresh": false
+      }
+
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "流浪者的圈子",
+    "navigationBarBackgroundColor": "#0199FE",
+    "backgroundColor": "#F8F8F8"
+  },
+  "uniIdRouter": {},
+  "tabBar": {
+    "color": "#888",
+    "selectedColor": "#0199FE",
+    "list": [{
+        "pagePath": "pages/index/index",
+        "text": "圈子",
+        "iconPath": "static/images/quanzi.png",
+        "selectedIconPath": "static/images/quanzi-fill.png"
+      },
+      {
+        "pagePath": "pages/self/self",
+        "text": "我的",
+        "iconPath": "static/images/user.png",
+        "selectedIconPath": "static/images/user-fill.png"
+      }
+    ]
+  }
+}
