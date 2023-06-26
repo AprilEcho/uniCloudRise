@@ -1,15 +1,15 @@
 <template>
   <view class="edit">
     <view class="title">
-      <input type="text" placeholder="请输入标题" placeholder-class="placeholderClass">
+      <input v-model="artObj.title" type="text" placeholder="请输入标题" placeholder-class="placeholderClass">
     </view>
     <view class="content">
-      <editor class="myEdit" placeholder="写点什么吧~" show-img-size show-img-toolbar show-img-resize @ready="onEditReady"
-        @focus="onFocus" @statuschange="onStatuschange">
+      <editor v-model="artObj.content" class="myEdit" placeholder="写点什么吧~" show-img-size show-img-toolbar
+        show-img-resize @ready="onEditReady" @focus="onFocus" @statuschange="onStatuschange">
       </editor>
     </view>
     <view class="btnGroup">
-      <u-button type="primary" text="发布" disabled></u-button>
+      <u-button type="primary" text="发布" :disabled="!artObj.title.length" @click="onSubmit"></u-button>
     </view>
     <view class="tools" v-if="toolShow">
       <view class="item" @click="clickHead">
@@ -35,16 +35,44 @@
 </template>
 
 <script>
+  import {
+    getImgSrc,
+    getProvince
+  } from "../../utils/tools.js"
   export default {
     data() {
       return {
         toolShow: false,
         headShow: false,
         boldShow: false,
-        italicShow: false
+        italicShow: false,
+        artObj: {
+          title: "",
+          content: "",
+          description: "",
+          picurls: "",
+          province: ""
+
+        }
       };
     },
+    onLoad() {
+      getProvince().then(res => {
+        this.artObj.province = res
+      })
+    },
     methods: {
+      //点击提交
+      onSubmit() {
+        this.editorCtx.getContents({
+          sunccess: res => {
+            this.artObj.description = res.text.slice(0, 80);
+            this.artObj.content = res.html
+            this.artObj.picurls = getImgSrc(res.html)
+          }
+        })
+        console.log(this.artObj)
+      },
       //初始化
       onEditReady() {
         uni.createSelectorQuery().in(this).select(".myEdit").fields({
