@@ -1,24 +1,76 @@
 <template>
   <view class="home">
-    首页
-    <text class="iconfont icon-collection-fill"></text>
+    <view class="topnav">
+      <u-tabs :list="navList" @click="clickNav" :activeStyle="{
+            color: '#333',
+            fontWeight: 'bold',
+            transform: 'scale(1.08)'
+        }" :inactiveStyle="{
+            color: '#888',
+            transform: 'scale(1)'
+        }"></u-tabs>
+    </view>
+    <view class="loadingState" v-show="loadingState">
+      <u-skeleton rows="4" title loading></u-skeleton>
+    </view>
+    <view class="content">主体</view>
+    <view class="edit">
+      <text class="iconfont icon-a-21-xiugai"></text>
+    </view>
   </view>
 </template>
 
 <script>
   export default {
     data() {
-      return {}
+      return {
+        loadingState: false,
+        navList: [{
+          name: "最新"
+        }, {
+          name: "热门"
+        }]
+      }
     },
     onLoad() {
 
     },
     methods: {
+      clickNav(e) {
 
+      }
     }
   }
 </script>
 
 <style lang="scss">
+  .home {
+    .topnav {
+      margin-bottom: 30rpx;
+    }
 
+    .loadingState {
+      padding: 30rpx;
+    }
+
+    .edit {
+      width: 120rpx;
+      height: 120rpx;
+      background: #0199FE;
+      border-radius: 50%;
+      color: #fff;
+      position: fixed;
+      z-index: 100;
+      bottom: 150rpx;
+      right: 50rpx;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 0 20rpx rgba(1, 153, 254, 0.8);
+
+      .iconfont {
+        font-size: 50rpx;
+      }
+    }
+  }
 </style>
