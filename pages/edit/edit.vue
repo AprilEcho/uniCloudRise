@@ -35,10 +35,11 @@
 </template>
 
 <script>
+  const db = uniCloud.database()
   import {
     getImgSrc,
     getProvince
-  } from "../../utils/tools.js"
+  } from "@/utils/tools.js"
   export default {
     data() {
       return {
@@ -52,7 +53,6 @@
           description: "",
           picurls: "",
           province: ""
-
         }
       };
     },
@@ -65,14 +65,29 @@
       //点击提交
       onSubmit() {
         this.editorCtx.getContents({
-          sunccess: res => {
+          success: res => {
             this.artObj.description = res.text.slice(0, 80);
             this.artObj.content = res.html
             this.artObj.picurls = getImgSrc(res.html)
+            uni.showLoading({
+              title: "发布中..."
+            })
+            this.addData()
           }
         })
-        console.log(this.artObj)
       },
+      addData() {
+        db.collection("quanzi_article").add({
+          ...this.artObj
+        }).then(res => {
+          // console.log(res)
+          uni.hideLoading()
+          uni.showToast({
+            title: "发布成功"
+          })
+        })
+      },
+
       //初始化
       onEditReady() {
         uni.createSelectorQuery().in(this).select(".myEdit").fields({
