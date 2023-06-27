@@ -13,36 +13,60 @@
     <view class="loadingState" v-show="loadingState">
       <u-skeleton rows="4" title loading></u-skeleton>
     </view>
-    <view class="content">
+    <view class="content" v-show="!loadingState">
       <view class="item" v-for="item in dataList">
-        <blog-item></blog-item>
+        <blog-item :item="item"></blog-item>
       </view>
     </view>
-    <view class="edit">
+    <view class="edit" @click="goedit">
       <text class="iconfont icon-a-21-xiugai"></text>
     </view>
   </view>
 </template>
 
 <script>
+  const db = uniCloud.database()
   export default {
     data() {
       return {
-        dataList: [1, 2, 3],
+        dataList: [],
+        navActive: 0,
         loadingState: false,
         navList: [{
-          name: "最新"
+          name: "最新",
+          type: "publish_date"
         }, {
-          name: "热门"
+          name: "热门",
+          type: "view_count"
         }]
       }
     },
     onLoad() {
-
+      this.loadingState = true
+      this.getData()
     },
     methods: {
+      //获取数据
+      getData() {
+        let artTemp = db.collection("quanzi_article").field(
+          "user_id,title,description,picurls,comment_count,like_count,view_count,publish_date").getTemp();
+        let userTemp = db.collection("uni-id-users").field("_id,username,nickname,avatar_file").getTemp()
+        db.collection(artTemp, userTemp).orderBy(this.navList[this.navActive].type, "desc").get().then(res => {
+          this.dataList = res.result.data
+          this.loadingState = false
+        })
+      },
       clickNav(e) {
-
+        this.navActive = e.index;
+        this.loadingState = true
+        this.dataList = []
+        this.getData()
+      },
+      //跳转到编辑页面
+      goedit() {
+        uni.navigateTo({
+          url: "/pages/edit/edit"
+        })
       }
     }
   }

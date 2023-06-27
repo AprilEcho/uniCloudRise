@@ -4,11 +4,14 @@
       <view class="head">
         <view class="userinfo">
           <view class="avatar">
-            <image src="../../static/images/panda.jpg" mode="aspectFill"></image>
+            <image
+              :src="item.user_id[0].avatar_file?item.user_id[0].avatar_file.url:'../../static/images/user-default.jpg'"
+              mode="aspectFill"></image>
           </view>
-          <view class="name">王五</view>
+          <view class="name">{{item.user_id[0].nickname?item.user_id[0].nickname:item.user_id[0].username}}</view>
           <view class="time">
-            <uni-dateformat :date="Date.now()" format="MM月dd hh:mm" :threshold="[60000,3600000*24*30]"></uni-dateformat>
+            <uni-dateformat :date="item.publish_date" format="MM月dd hh:mm"
+              :threshold="[60000,3600000*24*30]"></uni-dateformat>
           </view>
         </view>
 
@@ -18,22 +21,26 @@
       </view>
 
       <view class="body">
-        <view class="title">默认标题</view>
+        <view class="title">{{item.title}}</view>
         <view class="text">
-          <view class="t">博客摘要部分博客摘要部分博客摘要部分博客摘要部分博客摘要部分博客摘要部分</view>
+          <view class="t">{{item.description}}</view>
         </view>
         <view class="piclist">
-          <view class="pic" :class="picArr.length==1 ? 'only': ''" v-for="item in picArr" :key="item">
-            <image src="../../static/images/pic2.jpg" mode="aspectFill"></image>
+          <view class="pic" :class="item.picurls.length==1 ? 'only': ''" v-for="(pic,index) in item.picurls" :key="pic">
+            <image @click="clickPic(index)" :src="pic" mode="aspectFill"></image>
           </view>
         </view>
       </view>
 
 
       <view class="info">
-        <view class="box"><text class="iconfont icon-a-27-liulan"></text> <text>15</text></view>
-        <view class="box"><text class="iconfont icon-a-5-xinxi"></text> <text>30</text></view>
-        <view class="box"><text class="iconfont icon-a-106-xihuan"></text> <text>22</text></view>
+        <view class="box"><text class="iconfont icon-a-27-liulan"></text> <text>{{item.view_count}}</text></view>
+        <view class="box"><text class="iconfont icon-a-5-xinxi"></text>
+          <text>{{item.comment_count ? item.comment_count:'评论'}}</text>
+        </view>
+        <view class="box"><text class="iconfont icon-a-106-xihuan"></text>
+          <text>{{item.like_count?item.like_count:'点赞'}}</text>
+        </view>
       </view>
 
     </view>
@@ -43,10 +50,25 @@
 <script>
   export default {
     name: "blog-item",
+    props: {
+      item: {
+        type: Object,
+        default () {
+          return {}
+        }
+      }
+    },
     data() {
-      return {
-        picArr: [1, 2, 3]
-      };
+      return {};
+    },
+    methods: {
+      //点击图片放大
+      clickPic(index) {
+        uni.previewImage({
+          urls: this.item.picurls,
+          current: index
+        })
+      }
     }
   }
 </script>

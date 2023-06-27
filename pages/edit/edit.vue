@@ -85,6 +85,12 @@
           uni.showToast({
             title: "发布成功"
           })
+          setTimeout(() => {
+            uni.reLaunch({
+              url: "/pages/index/index"
+            })
+          }, 800)
+
         })
       },
 
