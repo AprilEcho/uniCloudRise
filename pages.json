@@ -99,16 +99,7 @@
       "enablePullDownRefresh": false,
       "navigationBarTitleText": "实名认证"
     }
-  }    ,{
-            "path" : "pages/detail/detail",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "详情页",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
+  }],
   "globalStyle": {
     "navigationBarTextStyle": "white",
     "navigationBarTitleText": "流浪者的圈子",
