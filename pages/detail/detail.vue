@@ -8,13 +8,11 @@
         <view class="title">{{detailObj.title}}</view>
         <view class="userinfo">
           <view class="avatar">
-            <image
-              :src="detailObj.user_id[0].avatar_file?detailObj.user_id[0].avatar_file.url:'../../static/images/user-default.jpg'"
-              mode="aspectFill"></image>
+            <image :src="giveAvatar(detailObj)" mode="aspectFill"></image>
           </view>
           <view class="text">
             <view class="name">
-              {{detailObj.user_id[0].nickname?detailObj.user_id[0].nickname:detailObj.user_id[0].username}}
+              {{giveName(detailObj)}}
             </view>
             <view class="small"><uni-dateformat :date="detailObj.publish_date" format="yyyy年MM月dd日"></uni-dateformat> ·
               {{detailObj.province}}
@@ -41,6 +39,13 @@
 </template>
 
 <script>
+  import {
+    giveName,
+    giveAvatar
+  } from "../../utils/tools.js"
+  import {
+    store
+  } from "@/uni_modules/uni-id-pages/common/store.js"
   const db = uniCloud.database()
   const utilsObj = uniCloud.importObject("utilsObj", {
     customUI: true
@@ -68,6 +73,8 @@
       this.readUpdate()
     },
     methods: {
+      giveAvatar,
+      giveName,
       //点赞操作
       clickLike() {
         let time = Date.now()
@@ -123,7 +130,9 @@
         let userTemp = db.collection("uni-id-users").field("_id,username,nickname,avatar_file").getTemp();
         let likeTemp = db.collection("quanzi_like").where(`article_id == "${this.artId}" && user_id==$cloudEnv_uid`)
           .getTemp()
-        db.collection(artTemp, userTemp, likeTemp).get({
+        let tempArr = [artTemp, userTemp]
+        if (store.hasLogin) tempArr.push(likeTemp)
+        db.collection(...tempArr).get({
           getOne: true
         }).then(res => {
           console.log(res);
@@ -131,7 +140,8 @@
             this.errFun()
             return
           }
-          let isLike = res.result.data._id.quanzi_like.length ? true : false
+          let isLike = false
+          if (store.hasLogin) isLike = res.result.data._id.quanzi_like.length ? true : false
           res.result.data.isLike = isLike;
           this.loadState = false;
           this.detailObj = res.result.data

@@ -4,11 +4,9 @@
       <view class="head">
         <view class="userinfo">
           <view class="avatar">
-            <image
-              :src="item.user_id[0].avatar_file?item.user_id[0].avatar_file.url:'../../static/images/user-default.jpg'"
-              mode="aspectFill"></image>
+            <image :src="giveAvatar(item)" mode="aspectFill"></image>
           </view>
-          <view class="name">{{item.user_id[0].nickname?item.user_id[0].nickname:item.user_id[0].username}}</view>
+          <view class="name">{{giveName(item)}}</view>
           <view class="time">
             <uni-dateformat :date="item.publish_date" format="MM月dd hh:mm"
               :threshold="[60000,3600000*24*30]"></uni-dateformat>
@@ -22,10 +20,10 @@
 
       <view class="body">
         <view class="title" @click="goDetail">{{item.title}}</view>
-        <view class="text" @click="goDetail">
+        <view class="text" @click="goDetail" v-if="item.description">
           <view class="t">{{item.description}}</view>
         </view>
-        <view class="piclist">
+        <view class="piclist" v-if="item.picurls.length">
           <view class="pic" :class="item.picurls.length==1 ? 'only': ''" v-for="(pic,index) in item.picurls" :key="pic">
             <image @click="clickPic(index)" :src="pic" mode="aspectFill"></image>
           </view>
@@ -48,6 +46,10 @@
 </template>
 
 <script>
+  import {
+    giveName,
+    giveAvatar
+  } from "../../utils/tools.js"
   export default {
     name: "blog-item",
     props: {
@@ -62,6 +64,8 @@
       return {};
     },
     methods: {
+      giveName,
+      giveAvatar,
       //点击图片放大
       clickPic(index) {
         uni.previewImage({
