@@ -99,23 +99,29 @@
       "enablePullDownRefresh": false,
       "navigationBarTitleText": "实名认证"
     }
-  }    ,{
-            "path" : "pages/detail/detail",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "详情页",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
+  }, {
+    "path": "pages/detail/detail",
+    "style": {
+      "navigationBarTitleText": "详情页",
+      "enablePullDownRefresh": false
+    }
+
+  }],
   "globalStyle": {
     "navigationBarTextStyle": "white",
     "navigationBarTitleText": "流浪者的圈子",
     "navigationBarBackgroundColor": "#0199FE",
     "backgroundColor": "#F8F8F8"
   },
-  "uniIdRouter": {},
+  "uniIdRouter": {
+    "loginPage": "uni_modules/uni-id-pages/pages/login/login-withpwd",
+    "needLogin": [
+      "pages/detail/*",
+      "pages/edit/*",
+      "uni_modules/uni-id-pages/pages/userinfo/userinfo"
+    ],
+    "resToLogin": true
+  },
   "tabBar": {
     "color": "#888",
     "selectedColor": "#0199FE",
