@@ -39,6 +39,7 @@
 </template>
 
 <script>
+  import pageJson from "@/pages.json"
   import {
     giveName,
     giveAvatar
@@ -77,6 +78,19 @@
       giveName,
       //点赞操作
       clickLike() {
+        if (!store.hasLogin) {
+          uni.showModal({
+            title: "请登陆后点赞，点击前往登陆...",
+            success: res => {
+              if (res.confirm) {
+                uni.navigateTo({
+                  url: "/" + pageJson.uniIdRouter.loginPage
+                })
+              }
+            }
+          })
+          return
+        }
         let time = Date.now()
         if (time - this.likeTime < 2000) {
           uni.showToast({
