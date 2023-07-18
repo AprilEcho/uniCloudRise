@@ -44,11 +44,11 @@
 
       <view class="list">
         <view class="group">
-          <view class="item">
+          <view class="item" @click="myArticle">
             <view class="left"><text class="iconfont icon-a-24-bianji"></text><text class="text">我的长文</text></view>
             <view class="right"><text class="iconfont icon-a-10-you"></text></view>
           </view>
-          <view class="item">
+          <view class="item" @click="myLike">
             <view class="left"><text class="iconfont icon-a-106-xihuan"></text><text class="text">我的点赞</text></view>
             <view class="right"><text class="iconfont icon-a-10-you"></text></view>
           </view>
@@ -102,23 +102,41 @@
       }
     },
     methods: {
+      //跳转到我的点赞
+      myLike() {
+        if (this.goLoginPage()) return
+        uni.navigateTo({
+          url: "/pages/quanzi_like/list"
+        })
+      },
+      //跳转到我的长文
+      myArticle() {
+        if (this.goLoginPage()) return
+        uni.navigateTo({
+          url: "/pages/quanzi_article/list"
+        })
+      },
       //退出登陆
       logout() {
-        if (this.hasLogin) {
-          uni.showModal({
-            title: "是否确认退出？",
-            success: res => {
-              if (res.confirm) {
-                mutations.logout()
-              }
+        if (this.goLoginPage()) return
+        uni.showModal({
+          title: "是否确认退出？",
+          success: res => {
+            if (res.confirm) {
+              mutations.logout()
             }
-          })
-        } else {
+          }
+        })
+      },
+      goLoginPage() {
+        if (!this.hasLogin) {
           uni.showToast({
             title: "未登录",
             icon: "none"
           })
+          return true
         }
+        return false
       },
       //编辑个人资料
       toUserInfo() {

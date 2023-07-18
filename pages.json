@@ -106,6 +106,16 @@
       "enablePullDownRefresh": false
     }
 
+  }, {
+    "path": "pages/quanzi_article/list",
+    "style": {
+      "navigationBarTitleText": "列表"
+    }
+  }, {
+    "path": "pages/quanzi_like/list",
+    "style": {
+      "navigationBarTitleText": "列表"
+    }
   }],
   "globalStyle": {
     "navigationBarTextStyle": "white",
